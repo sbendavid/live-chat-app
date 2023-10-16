@@ -22,7 +22,6 @@ server = app.listen(PORT, ()=> {
 
 // Socket setup
 const io = socket(server);
-let users = []; // Array of all connected clients (users)
 const activeUsers = new Set();
 io.on("connection", function (socket) {
     console.log("Made socket connection");
