@@ -15,7 +15,31 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  username String @unique
-  password String
+  id               Int       @id @default(autoincrement())
+  username         String    @unique
+  password         String
+  messages         Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+  groups           Group[]   @relation("GroupMembers")
+}
+
+model Message {
+  id         Int      @id @default(autoincrement())
+  content    String
+  senderId   Int
+  receiverId Int?
+  groupId    Int?
+  createdAt  DateTime @default(now())
+
+  sender   User   @relation("SentMessages", fields: [senderId], references: [id])
+  receiver User?  @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  group    Group? @relation(fields: [groupId], references: [id])
+}
+
+model Group {
+  id      Int    @id @default(autoincrement())
+  name    String
+  members User[] @relation("GroupMembers")
+
+  messages Message[]
 }
