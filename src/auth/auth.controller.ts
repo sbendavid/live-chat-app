@@ -30,6 +30,13 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @Post('logout')
+  logout() {
+    return { message: 'Logout successful' }; // Add Blacklist of token
+  }
+
+  @UseGuards(AuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;
